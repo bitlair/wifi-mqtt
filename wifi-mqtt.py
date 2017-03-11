@@ -88,13 +88,12 @@ if __name__ == '__main__':
             continue
 
         diff = activity.diff(prev_activity)
-        if len(diff['joined']) > 0 or len(diff['parted']) > 0:
-            hooks = [
-#                hook_print,
-                hook_mqtt,
-            ]
-            for hook in hooks:
-                hook(activity, prev_activity, diff)
+        hooks = [
+#            hook_print,
+            hook_mqtt,
+        ]
+        for hook in hooks:
+            hook(activity, prev_activity, diff)
 
         prev_activity = activity
         time.sleep(30)
