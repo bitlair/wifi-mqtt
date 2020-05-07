@@ -17,13 +17,12 @@ def read_ap(filepath):
     regexp_mac = re.compile('^(:?[0-9a-f]{2}:){5}[0-9a-f]{2}$')
     associations = json.loads(subprocess.check_output([ filepath ]).decode('utf8'))
     assert type(associations) is list, 'The value returned by the AP driver is not a list'
-    for assoc in associations:
-        assert type(assoc['mac']) is str
-        assert regexp_mac.match(assoc['mac']), 'Invalid MAC: %s' % assoc['mac']
-        assert type(assoc['ssid']) is str and len(assoc['ssid']) > 1, 'Invalid SSID: %s' % assoc['ssid']
-        if 'signal' in assoc:
-            assert type(assoc['signal']) is int
-    return associations
+
+    def valid(assoc):
+        return type(assoc['mac']) is str \
+            and regexp_mac.match(assoc['mac']) \
+            and type(assoc['ssid']) is str and len(assoc['ssid']) > 1
+    return [ assoc for assoc in associations if valid(assoc)]
 
 class Activity(object):
 
