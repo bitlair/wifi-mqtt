@@ -57,12 +57,15 @@ foreach($clientTable as $index => $value) {
 
     if ($index2[0] == 1) {
         $radio_mac = $clientTable["iso.3.6.1.4.1.14823.2.3.3.1.2.4.1.2.".$index3];
+        $username  = $clientTable["iso.3.6.1.4.1.14823.2.3.3.1.2.4.1.5.".$index3];
+        // Only count the username field an actual username if it contains an '@'.
+        $username  = strpos($username, "@") !== false ? $username : "";
         $radio_mac = str_replace(" ", ":", trim(str_replace("Hex-STRING: ", "", $radio_mac)));
         $macs[] = array (
-            "mac"    => strtolower(str_replace(" ", ":", trim(str_replace("Hex-STRING: ", "", $value)))),
-            "ssid"   => trim(str_replace("\"", "", str_replace("STRING: ", "", $ssid[$radio_mac]))),
-//            "radio"  => "IAP",
-            "signal" => intval(trim(str_replace("INTEGER: ", "", $clientTable["iso.3.6.1.4.1.14823.2.3.3.1.2.4.1.7.".$index3]))),
+            "mac"      => strtolower(str_replace(" ", ":", trim(str_replace("Hex-STRING: ", "", $value)))),
+            "ssid"     => trim(str_replace("\"", "", str_replace("STRING: ", "", $ssid[$radio_mac]))),
+            "username" => $username !== "" ? trim(str_replace("\"", "", str_replace("STRING: ", "", $username))) : NULL,
+            "signal"   => intval(trim(str_replace("INTEGER: ", "", $clientTable["iso.3.6.1.4.1.14823.2.3.3.1.2.4.1.7.".$index3]))),
         );
     }
 }

@@ -49,6 +49,10 @@ class Activity(object):
             'parted': [ prev_activity.associations[mac] for mac in macs_parted ],
         }
 
+    def unique_usernames_for_ssid(self, ssid):
+        include = lambda assoc: assoc['ssid'] == ssid and assoc['username'] is not None
+        return { assoc['username'] for assoc in self.associations.values() if include(assoc) }
+
 
 def hook_print(activity, prev_activity, diff):
     print('')
@@ -64,6 +68,8 @@ def hook_mqtt(activity, prev_activity, diff):
     for ssid in activity.ssids() | prev_activity.ssids():
         online_count = sum(assoc['ssid'] == ssid for assoc in activity.associations.values())
         mqttc.publish('bitlair/wifi/%s/online' % normalize_ssid(ssid), str(online_count), retain=True)
+        unique_usernames = len(activity.unique_usernames_for_ssid(ssid))
+        mqttc.publish('bitlair/wifi/%s/unique_usernames' % normalize_ssid(ssid), str(unique_usernames), retain=True)
     for assoc in diff['joined']:
         signal = assoc['signal'] if 'signal' in assoc else '-'
         payload = 'join %s %s' % (assoc['mac'], signal)
