@@ -1,4 +1,4 @@
-#!/usr/bin/php5
+#!/usr/bin/php
 <?php
 
 // Report all errors. Errors should never be ignored, it means that our
