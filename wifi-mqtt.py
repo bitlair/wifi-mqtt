@@ -10,7 +10,7 @@ import time
 
 
 MQTT_HOST = 'mqtt.bitlair.nl'
-AP_DIR    = path.join(path.dirname(__file__), 'access_points.d')
+AP_DIR    = path.join(path.dirname(__file__), 'access_points')
 
 
 def read_ap(filepath):
