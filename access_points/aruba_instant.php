@@ -19,8 +19,8 @@ try {
 //    "802.11g/n (IAP)",
 //    "802.11a/n (IAP)",
 //];
-$ip   = "IP";
-$snmp = "SNMP"; // Keep this secret :)
+$ip   = getenv("ARUBA_INSTANT_IP");
+$snmp = getenv("ARUBA_INSTANT_PASSWORD");
 
 
 $ssid = array();
